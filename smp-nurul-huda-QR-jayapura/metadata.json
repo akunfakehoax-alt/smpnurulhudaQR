@@ -1,0 +1,6 @@
+{
+  "name": "PRESENSI QR CODE SMP NURUL HUDA JAYAPURA",
+  "description": "Sistem Presensi Siswa Digital Berbasis QR Code SMP Nurul Huda Jayapura terintegrasi Google Apps Script, Google Sheets, dan Notifikasi WhatsApp Resmi.",
+  "requestFramePermissions": ["camera"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

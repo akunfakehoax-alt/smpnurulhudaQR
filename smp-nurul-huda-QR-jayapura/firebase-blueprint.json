@@ -1,0 +1,207 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Pengguna aplikasi presensi sekolah (Admin, Guru Piket, Guru Mapel, Siswa, Kepala Sekolah)",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string", "maxLength": 128 },
+        "email": { "type": "string", "maxLength": 128 },
+        "displayName": { "type": "string", "maxLength": 100 },
+        "role": { "type": "string", "enum": ["admin", "guru_piket", "guru_mapel", "siswa", "kepsek"] },
+        "nip": { "type": "string", "maxLength": 30 },
+        "nisn": { "type": "string", "maxLength": 20 },
+        "kelas": { "type": "string", "maxLength": 20 },
+        "phone": { "type": "string", "maxLength": 20 },
+        "photoURL": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["uid", "email", "displayName", "role"]
+    },
+    "Admin": {
+      "title": "Admin",
+      "description": "Dokumen verifikasi hak akses administrator sistem",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "maxLength": 128 },
+        "grantedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["email"]
+    },
+    "Student": {
+      "title": "Student",
+      "description": "Master data siswa SMP Nurul Huda Jayapura",
+      "type": "object",
+      "properties": {
+        "nisn": { "type": "string", "maxLength": 20 },
+        "nama": { "type": "string", "maxLength": 100 },
+        "kelas": { "type": "string", "maxLength": 20 },
+        "jenisKelamin": { "type": "string", "enum": ["L", "P"] },
+        "nomorHpWali": { "type": "string", "maxLength": 25 },
+        "namaWali": { "type": "string", "maxLength": 100 },
+        "barcodeCode": { "type": "string", "maxLength": 50 },
+        "status": { "type": "string", "enum": ["aktif", "nonaktif", "pindah", "lulus"] },
+        "createdAt": { "type": "string", "maxLength": 50 },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["nisn", "nama", "kelas", "jenisKelamin", "nomorHpWali", "namaWali"]
+    },
+    "AttendanceRecord": {
+      "title": "AttendanceRecord",
+      "description": "Catatan presensi harian siswa hasil scan QR atau input guru piket",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nisn": { "type": "string", "maxLength": 20 },
+        "nama": { "type": "string", "maxLength": 100 },
+        "kelas": { "type": "string", "maxLength": 20 },
+        "sesiId": { "type": "string", "maxLength": 50 },
+        "tanggal": { "type": "string", "maxLength": 20 },
+        "jam": { "type": "string", "maxLength": 20 },
+        "status": { "type": "string", "enum": ["HADIR", "TERLAMBAT", "SAKIT", "IZIN", "ALFA"] },
+        "metode": { "type": "string", "enum": ["SCAN_OPERATOR", "SCAN_MANDIRI_HP", "MANUAL_OPERATOR"] },
+        "keterangan": { "type": "string", "maxLength": 200 },
+        "verifiedBy": { "type": "string", "maxLength": 100 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["nisn", "nama", "kelas", "tanggal", "jam", "status", "metode"]
+    },
+    "QRSession": {
+      "title": "QRSession",
+      "description": "Sesi presensi aktif/berkala dengan token QR dinamis",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "kodeSesi": { "type": "string", "maxLength": 50 },
+        "namaSesi": { "type": "string", "maxLength": 100 },
+        "tipe": { "type": "string", "enum": ["MASUK", "PULANG", "EKSTRAKURIKULER", "UPACARA"] },
+        "tanggal": { "type": "string", "maxLength": 20 },
+        "jamMulai": { "type": "string", "maxLength": 10 },
+        "jamSelesai": { "type": "string", "maxLength": 10 },
+        "isActive": { "type": "boolean" },
+        "createdById": { "type": "string", "maxLength": 128 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "kodeSesi", "namaSesi", "tipe", "tanggal", "jamMulai", "jamSelesai", "isActive"]
+    },
+    "LeaveRequest": {
+      "title": "LeaveRequest",
+      "description": "Pengajuan izin/sakit siswa online untuk persetujuan guru",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "nisn": { "type": "string", "maxLength": 20 },
+        "nama": { "type": "string", "maxLength": 100 },
+        "kelas": { "type": "string", "maxLength": 20 },
+        "kategori": { "type": "string", "enum": ["SAKIT", "IZIN", "DISPENSASI"] },
+        "tanggalMulai": { "type": "string", "maxLength": 20 },
+        "tanggalSelesai": { "type": "string", "maxLength": 20 },
+        "alasan": { "type": "string", "maxLength": 300 },
+        "lampiranUrl": { "type": "string", "maxLength": 500 },
+        "status": { "type": "string", "enum": ["MENUNGGU", "DISETUJUI", "DITOLAK"] },
+        "disetujuiOleh": { "type": "string", "maxLength": 100 },
+        "catatanGuru": { "type": "string", "maxLength": 200 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "nisn", "nama", "kelas", "kategori", "tanggalMulai", "tanggalSelesai", "alasan", "status"]
+    },
+    "Announcement": {
+      "title": "Announcement",
+      "description": "Pengumuman dan edaran resmi sekolah",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "judul": { "type": "string", "maxLength": 150 },
+        "konten": { "type": "string", "maxLength": 1000 },
+        "kategori": { "type": "string", "enum": ["AKADEMIK", "KEGIATAN", "PENTING", "LIBUR"] },
+        "targetAudience": { "type": "string", "enum": ["SEMUA", "GURU", "SISWA", "WALI_MURID"] },
+        "tanggal": { "type": "string", "maxLength": 20 },
+        "authorName": { "type": "string", "maxLength": 100 },
+        "priority": { "type": "string", "enum": ["BIASA", "PENTING", "MENDESAK"] },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "judul", "konten", "kategori", "targetAudience", "tanggal"]
+    },
+    "TeachingJournal": {
+      "title": "TeachingJournal",
+      "description": "Jurnal agenda Kegiatan Belajar Mengajar (KBM) guru mata pelajaran",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "maxLength": 128 },
+        "guruId": { "type": "string", "maxLength": 128 },
+        "namaGuru": { "type": "string", "maxLength": 100 },
+        "mataPelajaran": { "type": "string", "maxLength": 100 },
+        "kelas": { "type": "string", "maxLength": 20 },
+        "tanggal": { "type": "string", "maxLength": 20 },
+        "jamKe": { "type": "string", "maxLength": 20 },
+        "materiPokok": { "type": "string", "maxLength": 300 },
+        "jumlahHadir": { "type": "number" },
+        "jumlahSakit": { "type": "number" },
+        "jumlahIzin": { "type": "number" },
+        "jumlahAlfa": { "type": "number" },
+        "catatanKbm": { "type": "string", "maxLength": 500 },
+        "createdAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["id", "guruId", "namaGuru", "mataPelajaran", "kelas", "tanggal", "materiPokok"]
+    },
+    "SchoolProfile": {
+      "title": "SchoolProfile",
+      "description": "Profil identitas dan parameter geofencing sekolah",
+      "type": "object",
+      "properties": {
+        "namaSekolah": { "type": "string", "maxLength": 100 },
+        "npsn": { "type": "string", "maxLength": 20 },
+        "alamat": { "type": "string", "maxLength": 200 },
+        "telepon": { "type": "string", "maxLength": 30 },
+        "email": { "type": "string", "maxLength": 100 },
+        "kepalaSekolah": { "type": "string", "maxLength": 100 },
+        "nipKepsek": { "type": "string", "maxLength": 30 },
+        "latitude": { "type": "number" },
+        "longitude": { "type": "number" },
+        "radiusMeter": { "type": "number" },
+        "toleransiKeterlambatanMenit": { "type": "number" },
+        "updatedAt": { "type": "string", "maxLength": 50 }
+      },
+      "required": ["namaSekolah", "latitude", "longitude", "radiusMeter"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Data profil akun pengguna dan peran akses (RBAC)"
+    },
+    "/admins/{userId}": {
+      "schema": "Admin",
+      "description": "Daftar ID pengguna dengan wewenang administrator sekolah"
+    },
+    "/students/{studentId}": {
+      "schema": "Student",
+      "description": "Koleksi data pokok siswa terdaftar"
+    },
+    "/attendance_records/{recordId}": {
+      "schema": "AttendanceRecord",
+      "description": "Koleksi riwayat dan log absensi harian"
+    },
+    "/sessions/{sessionId}": {
+      "schema": "QRSession",
+      "description": "Koleksi sesi presensi QR harian"
+    },
+    "/leave_requests/{requestId}": {
+      "schema": "LeaveRequest",
+      "description": "Pengajuan surat sakit dan dispensasi siswa"
+    },
+    "/announcements/{announcementId}": {
+      "schema": "Announcement",
+      "description": "Koleksi pengumuman dan buletin resmi sekolah"
+    },
+    "/teaching_journals/{journalId}": {
+      "schema": "TeachingJournal",
+      "description": "Koleksi laporan jurnal KBM guru per sesi pelajaran"
+    },
+    "/school_profile/{profileId}": {
+      "schema": "SchoolProfile",
+      "description": "Pengaturan sekolah tunggal dan koordinat GPS geofencing"
+    }
+  }
+}
